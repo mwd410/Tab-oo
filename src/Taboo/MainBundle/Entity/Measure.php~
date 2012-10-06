@@ -1,0 +1,57 @@
+<?php
+
+namespace Taboo\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table()
+ */
+class Measure {
+               
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $measureNumber;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $tempoSubdivision;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $subdivisionPerMinute;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $timeSubdivision;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $subdivisionPerMeasure;
+    
+    /**
+    * ManyToOne(targetEntity="Song", inversedBy="measures")
+    */
+    protected $song;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Note", mappedBy="measure")
+    */
+    protected $notes;
+    
+    
+    
+}

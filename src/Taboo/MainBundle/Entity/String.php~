@@ -1,0 +1,49 @@
+<?php
+
+namespace Taboo\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table()
+ */
+class String {
+               
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="Song", inversedBy="strings")
+    */
+    protected $song;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Note", mappedBy="string")
+    */
+    protected $notes;
+    
+    /**
+    * @ORM\Column(type="float")
+    */
+    protected $hz;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $octave;
+    
+    /**
+    * @ORM\Column(type="string", length=2)
+    */
+    protected $note;
+    
+    /**
+    * @ORM\Column(type="string", length=50)
+    */
+    protected $type;  
+}

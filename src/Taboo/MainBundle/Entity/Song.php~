@@ -1,0 +1,50 @@
+<?php
+
+namespace Taboo\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table()
+ */
+class Song {
+               
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+    * @ORM\Column(type="string", length=100)
+    */
+    protected $artist;
+    
+    /**
+    * @ORM\Column(type="string", length=100)
+    */
+    protected $title;
+    
+    /**
+    * @ORM\Column(type="string", length=50)
+    */
+    protected $tabType;
+    
+    /**
+    * @ORM\Column(type="integer")
+    */
+    protected $capoFret;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="String", mappedBy="song")
+    */
+    protected $strings;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Measure", mappedBy="song")
+    */
+    protected $measures;
+    
+}
