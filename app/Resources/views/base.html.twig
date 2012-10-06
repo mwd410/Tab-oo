@@ -1,13 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>{% block title %}Tabs - Ukulele, Guitar, Tab-oo!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% stylesheets 
+        
+            '@TabooMainBundle/Resources/assets/bootstrap/css/bootstrap.min.css'
+            output = 'css/styles.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+            
+        {% endstylesheets %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
     <body>
-        {% block body %}{% endblock %}
+    
+        <div class="container-fluid">
+            
+            <header>
+            
+                <div class="row-fluid">
+                
+                    <h1>Tab-oo</h1>
+                    
+                    <div class="navbar navbar-inverse">
+                        <div class="navbar-inner">
+                            <ul class="nav">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li><a href="#">Link1</a></li>
+                                <li><a href="#">Link2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                </div>
+            
+            </header>
+    
+            {% block body %}{% endblock %}
+        
+        </div>
+        
         {% block javascripts %}{% endblock %}
+        {% javascripts 
+        
+            '@TabooMainBundle/Resources/assets/bootstrap/js/bootstrap.min.js'
+            'http://code.jquery.com/jquery-latest.js' 
+            output = 'js/javascript.js' %}
+            <script src="{{ asset_url }}"></script>
+          
+        {% endjavascripts %}
     </body>
 </html>
