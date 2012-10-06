@@ -1,0 +1,7 @@
+parameters:
+#    taboo_main.example.class: Taboo\MainBundle\Example
+
+services:
+#    taboo_main.example:
+#        class: %taboo_main.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
