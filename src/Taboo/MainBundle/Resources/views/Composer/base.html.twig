@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheets %}
+{% stylesheets "@TabooMainBundle/Resources/public/css/composer.css" %}
+    <link rel="text/css" href="{{ asset_url }}">
+{% endstylesheets %}
+{% endblock %}
+{% block body %}
+<canvas id="composerCanvas" style="border: 1px solid black;width:100%;">
+    
+</canvas>
+{% endblock %}
