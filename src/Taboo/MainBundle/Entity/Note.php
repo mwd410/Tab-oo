@@ -364,4 +364,32 @@ class Note {
     {
         return $this->string;
     }
+    
+    public function encode() {
+        $note = array();
+        
+        $note["id"] = $this->getId();
+        $note["measureId"] = $this->getMeasure()->getId();
+        $note["stringId"] = $this->getString()->getId();
+        $note["subdivision"] = $this->getSubdivision();
+        $note["position"] = $this->getPosition();
+        $note["absolutePosition"] = $this->getAbsolutePosition();
+        $note["length"] = $this->getLength();
+        $note["fret"] = $this->getFret();
+        $note["tieStart"] = $this->getTieStart();
+        $note["tieEnd"] = $this->getTieEnd();
+        $note["hammerOn"] = $this->getHammerOn();
+        $note["pullOff"] = $this->getPullOff();
+        $note["mute"] = $this->getMute();
+        
+        return $note;
+    }
+    
+    public function decode($note) {
+        if (is_string(note)) {
+            $note = json_decode($note);
+        }
+        
+        
+    }
 }

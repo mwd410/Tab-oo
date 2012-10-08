@@ -2,11 +2,17 @@
 
 {% block stylesheets %}
 {% stylesheets "@TabooMainBundle/Resources/public/css/composer.css" %}
-    <link rel="text/css" href="{{ asset_url }}">
+<link rel="text/css" href="{{ asset_url }}">
 {% endstylesheets %}
 {% endblock %}
+
+{% block head %}
+{% javascripts "@TabooMainBundle/Resources/public/js/composer.js"%}
+<script src="{{asset_url}}"></script>
+{% endjavascripts %}
+{% endblock %}
+
 {% block body %}
-<canvas id="composerCanvas" style="border: 1px solid black;width:100%;">
-    
-</canvas>
+
+<canvas id="composerCanvas" style="border: 1px solid black;width:800px; height: 700px;"></canvas>
 {% endblock %}

@@ -223,4 +223,65 @@ class Song {
     {
         return $this->measures;
     }
+    
+    public function encode($recurseDepth = 0) {
+        $song = array();
+        
+        $song["id"] = $this->getId();
+        $song["artist"] = $this->getArtist();
+        $song["title"] = $this->getTitle();
+        $song["tabType"] = $this->getTabType();
+        $song["capoFret"] = $this->getCapoFret();
+        if (is_int($recurseDepth) && $recurseDepth > 0) {
+            $strings = array();
+            foreach ($this->getStrings() as $string) {
+                $strings[] = $string->encode();
+            }
+            $song["strings"] = $strings;
+            $measures = array();
+            foreach ($this->getMeasures() as $measure) {
+                $measures[] = $measure->encode($recurseDepth);
+            }
+            $song["measures"] = $measures;
+        }
+        
+        return $song;
+    }
+    
+    public function decode($song) {
+        if (is_string($song)) {
+            $song = json_decode($song);
+        }
+        
+        $this->setArtist($song["artist"]);
+        $this->setTitle($song["title"]);
+        $this->setTabType($song["tabType"]);
+        $this->setCapoFret($song["capoFret"]);
+        
+        if (!is_null($song["strings"])) {
+            foreach ($song["strings"] as $jsonString) {
+                foreach ($this->getStrings() as $string) {
+                    if ($jsonString["id"] == $string->getId()) {
+                        $string->decode($jsonString);
+                        goto StopStrings;
+                    }
+                }
+            }
+        }
+        StopStrings:
+        
+        if (!is_null($song("measures"))) {
+            foreach ($song["measures"] as $jsonMeasure) {
+                foreach ($this->getMeasures() as $measure) {
+                    if ($jsonMeasure["id"] == $measure->getId()) {
+                        $measure->decode($jsonMeasure);
+                        goto StopMeasures;
+                    }
+                }
+            }
+        }
+        StopMeasures:
+        
+        return $this;
+    }
 }

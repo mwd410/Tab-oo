@@ -11,6 +11,7 @@
             <link rel="stylesheet" href="{{ asset_url }}">
             
         {% endstylesheets %}
+            {% block head %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
     <body>
