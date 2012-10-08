@@ -1,0 +1,59 @@
+/**
+ * Subdivision values are calculated by determining the number
+ * of that subdivision in a 4/4 measure.
+ * 4 = quarter notes--4 quarter notes in a 4/4 measure.
+ * 12 = triplet 8th notes - 12 triplet 8th notes in a 4/4 measure.
+ * 20 = quintuplet 16th notes - 20 quintuplet 16th notes in a 4/4 measure--4 per beat.
+ * 3 = triplet half notes.
+ * 7 = group of 7. This can be displayed as 8th notes or quarter notes. sometimes, 
+ *      you'll see 7:4 which means there's 7 in the span of 4, in which case, 
+ *      they'd be quarter notes. if 8th notes, it'd have 7:8 written above.
+ */
+
+{
+    "id" : 111,
+    "artist" : "song artist",
+    "title" : "song title",
+    "tabType" : "guitar, ukulele, bass",
+    "capoFret" : 0,
+    "strings" : [
+    {
+        "id" : 222,
+        "songId" : 111,
+        "hz" : 440.0,
+        "note" : "A", //Ab, A#.
+        "octave" : 3,
+        "type" : "Steel" //nylon, etc.
+    }
+    ],
+    "measures" : [
+    {
+        "id" : 333,
+        "songId" : 111,
+        "measureNumber" : 1,
+        "tempoSubdivision" : 4,         //This, along with the following 3, would be null for any measure that doesn't change them.
+        "subdivisionPerMinute" : 120,   //in conjunction with tempoSubdivision, this means 120 quarter notes / minute
+        "timeSubdivision" : 4,          //the bottom number of the time signature
+        "subdivisionPerMeasure" : 4,    // in conjunction with timeSubdivision, this means 4/4.
+        "notes" : [
+        {
+            "id" : 444,
+            "measureId" : 333,
+            "string_index" : 0,         //used when new and being sent to the server.
+            "string_id" : 222,          //used when gathered from database.
+            "subdivision" : 8,          //subdivision of the starting point of the note.
+            "position" : 3,             //0-indexed, this means the note starts no the 4th 8th note of the measure--the and of 2.
+            "absolutePosition" : 1.5,   //also 0-indexed. This is the beat (according to the measure.timeSubdivision) at which the note should start. 
+                                        //This is calculated by position / subdivision * measure.timeSubdivision.
+            "length" : 1,               //length in subdivisions.
+            "fret" : 2,
+            "tieStart" : false,         //the previous note is tied into this one--as in from another measure (maybe?), or when changing subdivision.
+            "tieEnd" : false,
+            "hammerOn" : false,
+            "pullOff" : false,
+            "mute" : false
+        }
+        ]
+    }
+    ]
+}
