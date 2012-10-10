@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
 {% stylesheets "@TabooMainBundle/Resources/public/css/composer.css" %}
-<link rel="text/css" href="{{ asset_url }}">
+<link rel="stylesheet" href="{{ asset_url }}" type="text/css">
 {% endstylesheets %}
 {% endblock %}
 
@@ -13,6 +13,7 @@
 {% endblock %}
 
 {% block body %}
+<pre id="jsonText"></pre>
 
-<canvas id="composerCanvas" style="border: 1px solid black;width:800px; height: 700px;"></canvas>
+
 {% endblock %}

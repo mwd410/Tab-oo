@@ -235,6 +235,7 @@ class String {
         $this->setOctave($string["octave"]);
         $this->setType($string["type"]);
         
+        
         return $this;
     }
 }

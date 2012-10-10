@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Tabs - Ukulele, Guitar, Tab-oo!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         {% stylesheets 
         
             '@TabooMainBundle/Resources/assets/bootstrap/css/bootstrap.min.css'
@@ -11,6 +10,8 @@
             <link rel="stylesheet" href="{{ asset_url }}">
             
         {% endstylesheets %}
+            <script src="/taboo/web/js/javascript_jquery-latest_2.js"></script>
+        {% block stylesheets %}{% endblock %}
             {% block head %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>

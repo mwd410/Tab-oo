@@ -39,8 +39,7 @@
         {
             "id" : 444,
             "measureId" : 333,
-            "string_index" : 0,         //used when new and being sent to the server.
-            "string_id" : 222,          //used when gathered from database.
+            "stringIndex" : 0,          //indicates which string in the song's "strings" array to play on.
             "subdivision" : 8,          //subdivision of the starting point of the note.
             "position" : 3,             //0-indexed, this means the note starts no the 4th 8th note of the measure--the and of 2.
             "absolutePosition" : 1.5,   //also 0-indexed. This is the beat (according to the measure.timeSubdivision) at which the note should start. 

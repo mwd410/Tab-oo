@@ -28,6 +28,11 @@ class Note {
     protected $string;
     
     /**
+     * @ORM\Column(type="integer") 
+     */
+    protected $stringIndex;
+    
+    /**
     * @ORM\Column(type="integer")
     */
     protected $subdivision;
@@ -364,6 +369,29 @@ class Note {
     {
         return $this->string;
     }
+
+    /**
+     * Set stringIndex
+     *
+     * @param integer $stringIndex
+     * @return Note
+     */
+    public function setStringIndex($stringIndex)
+    {
+        $this->stringIndex = $stringIndex;
+    
+        return $this;
+    }
+
+    /**
+     * Get stringIndex
+     *
+     * @return integer 
+     */
+    public function getStringIndex()
+    {
+        return $this->stringIndex;
+    }
     
     public function encode() {
         $note = array();
@@ -371,6 +399,7 @@ class Note {
         $note["id"] = $this->getId();
         $note["measureId"] = $this->getMeasure()->getId();
         $note["stringId"] = $this->getString()->getId();
+        $note["stringIndex"] = $this->getStringIndex();
         $note["subdivision"] = $this->getSubdivision();
         $note["position"] = $this->getPosition();
         $note["absolutePosition"] = $this->getAbsolutePosition();
@@ -390,6 +419,17 @@ class Note {
             $note = json_decode($note);
         }
         
+        $this->setStringIndex($note["stringIndex"]);
+        $this->setSubdivision($note["subdivision"]);
+        $this->setPosition($note["position"]);
+        $this->setAbsolutePosition($note["absolutePosition"]);
+        $this->setLength($note["length"]);
+        $this->setFret($note["fret"]);
+        $this->setTieStart($note["tieStart"]);
+        $this->setTieEnd($note["tieEnd"]);
+        $this->setHammerOn($note["hammerOn"]);
+        $this->setPullOff($note["pullOff"]);
+        $this->setMute($note["mute"]);
         
     }
 }
