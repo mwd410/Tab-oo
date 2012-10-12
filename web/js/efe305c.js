@@ -122,53 +122,245 @@ if (typeof KeyEvent == "undefined") {
     };
 }
 
+function Pointer() {
+    this.subdivision = 4;
+    this.position = 0;
+    this.measure = 0;
+    this.string = 0;
+    this.fret = 0;
+    
+    this.moveRight = function() {
+        if (this.position < this.subdivision-1) {
+            this.position++;
+        } else {
+            song.addMeasure();
+            this.measure ++;
+            this.position = 0;
+        }
+    }
+    
+    this.moveLeft = function() {
+        if (this.position > 0) {
+            this.position--;
+        } else if (this.measure > 0) {
+            this.position = this.subdivision - 1;
+            this.measure--;
+        }
+    }
+    
+    this.nextMeasure = function() {
+        this.measure ++;
+        while (this.measure >= song.measures.length) {
+            song.addMeasure();
+        }
+    }
+    
+    this.previousMeasure = function() {
+        if (this.measure > 0) {
+            this.measure --;
+        }
+    }
+    
+    this.calculateAbs = function() {
+        return this.position / this.subdivision * 4;
+    }
+    
+    this.fixPosition = function(oldAbs) {
+        return Math.floor(this.subdivision*oldAbs/4);
+    }
+    
+    
+    this.decreaseSubdivision = function(precise) {
+        var oldAbs = this.calculateAbs();
+        if (!precise) {
+            if (isPowerOfTwo(this.subdivision) && this.subdivision > 1) {
+                this.subdivision /= 2;
+            } 
+            while (!isPowerOfTwo(this.subdivision)) {
+                this.subdivision --;
+            }
+        } else {
+            if (this.subdivision > 1) {
+                this.subdivision --;
+            }
+        }
+        this.position = this.fixPosition(oldAbs);
+    }
+    
+    this.increaseSubdivision = function(precise) {
+        var oldAbs = this.calculateAbs();
+        if (!precise) {
+            if (isPowerOfTwo(this.subdivision)) {
+                this.subdivision *= 2;
+            }
+            while (!isPowerOfTwo(this.subdivision)) {
+                this.subdivision++;
+            }
+        } else {
+            this.subdivision ++;
+        }
+        this.position = this.fixPosition(oldAbs);
+    }
+    
+    this.toggleTriplet = function() {
+        var oldAbs = this.calculateAbs();
+        if (this.subdivision % 3 == 0) {
+            this.subdivision *= 2/3;
+        } else if (isPowerOfTwo(this.subdivision) && this.subdivision > 1) {
+            this.subdivision *= 3/2;
+        }
+        this.position = this.fixPosition(oldAbs);
+    }
+}
+
+function Song (artist, title) {
+    this.artist = artist;
+    this.title = title;
+    this.strings = [
+    new String("e"),
+    new String("B"),
+    new String("G"),
+    new String("D"),
+    new String("A"),
+    new String("E")
+    ];
+    this.measures = [
+    new Measure(1)
+    ];
+    
+    this.getSelection = function() {
+        return this.measures[p.measure].selectNote();
+    }
+    
+    this.removeSelection = function() {
+        this.measures[p.measure].removeSelectedNote();
+    }
+    
+    this.addMeasure = function() {
+        this.measures.push(new Measure(song.measures.length + 1));
+    }
+}
+
+var p = new Pointer();
+var song = new Song("Matt Deady", "My Awesome Song");
+
+    
+function String(note) {
+    this.note = note;
+}
+
+function Measure(measureNumber) {
+    this.measureNumber = measureNumber;
+    this.notes = [];
+    
+    this.selectNote = function() {
+        var ret = {
+            "note" : null
+        };
+        for (var i = 0; i < this.notes.length; i++) {
+            if (this.notes[i].position == p.position
+                && this.notes[i].string == p.string
+                && this.notes[i].subdivision == p.subdivision) {
+                ret["note"] = this.notes[i]
+                ret["index"] = i;
+                break;
+            }
+        }
+        return ret;
+    }
+    
+    this.addNote = function() {
+        var note = this.selectNote().note;
+        if (!note) {
+            note = new Note();
+            var added = false;
+            for (var j = 0; j < this.notes.length; j++) {
+                if (this.notes[j].absolutePosition > note.absolutePosition) {
+                    this.notes.splice(j,0,note);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                this.notes.push(note);
+            }
+        } else {
+            note.fret = p.fret;
+        }
+    }
+    
+    this.removeSelectedNote = function() {
+        var selection = this.selectNote();
+        if (selection.note) {
+            this.notes.splice(selection.index, 1);
+        }
+    }
+}
+
+function Note() {
+    this.subdivision = p.subdivision;
+    this.position = p.position;
+    this.string = p.string;
+    this.fret = p.fret;
+    this.absolutePosition = this.position / this.subdivision * 4;
+}
+
 $(document).ready(function() {
     
-    var song = {};
-    var subdivision = 4;
-    var position = 0;
-    song["artist"] = "matt deady";
-    song["title"] = "song title";
-    song["strings"] = [
-    newString("e"),
-    newString("B"),
-    newString("G"),
-    newString("D"),
-    newString("A"),
-    newString("E")
-    ]
-    song["measures"] = [
-    newMeasure(1)
-    ];
     $("body").keydown(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == KeyEvent.DOM_VK_D) {
-            if (position < subdivision) {
-                position++;
+            p.moveRight();
+        } else if (code == KeyEvent.DOM_VK_A) {
+            p.moveLeft();
+        } else if (code == KeyEvent.DOM_VK_E) {
+            p.nextMeasure();
+        } else if (code == KeyEvent.DOM_VK_Q) {
+            p.previousMeasure();
+        } else if (code == KeyEvent.DOM_VK_W) {
+            if (p.string < song.strings.length - 1) {
+                p.string ++;
             } else {
-                song["measures"].append(newMeasure(song["measures"].length + 1));
+                p.string = 0;
             }
-            console.log(position);
-        }
-        if (code == KeyEvent.DOM_VK_A) {
-            if (position >= 0) {
-                position--;
+        } else if (code == KeyEvent.DOM_VK_S) {
+            if (p.string > 0) {
+                p.string --;
+            } else {
+                p.string = song.strings.length - 1;
             }
-            console.log(position);
+        } else if (code >= KeyEvent.DOM_VK_NUMPAD0
+            && code <= KeyEvent.DOM_VK_NUMPAD9) {
+            var num = code - KeyEvent.DOM_VK_NUMPAD0;
+            if (p.fret == 0 || p.fret >= 3) { //no fret board is more than 30.
+                p.fret = num;
+            } else {
+                p.fret *= 10;
+                p.fret += num;
+            }
+        } else if (code == KeyEvent.DOM_VK_RETURN) {
+            song.measures[p.measure].addNote(new Note());
+        } else if (code == KeyEvent.DOM_VK_PERIOD) {
+            song.removeSelection();
+        } else if (code == KeyEvent.DOM_VK_ADD) {
+            p.increaseSubdivision(e.shiftKey);
+        } else if (code == KeyEvent.DOM_VK_SUBTRACT) {
+            p.decreaseSubdivision(e.shiftKey);
+        } else if (code == KeyEvent.DOM_VK_T) {
+            p.toggleTriplet();
         }
-        
+        if (code!=KeyEvent.DOM_VK_SHIFT) {
+            console.log("Key pressed: "+code);
+            log();
+        }
         printJSON(song);
     });
     
 });
 
-function sortNotes(song) {
-    var measures = song["measures"];
-    for (var i = 0; i < measures.length; ++i) {
-        for (var j = 0; j < measures[i]["notes"].length; ++i) {
-            
-            }
-    }
+function log() {
+    console.log("m:"+p.measure + ", p:" + p.position + ", s:"+p.string + ", f:" + p.fret + ", sub:"+p.subdivision);
+    
 }
 
 
@@ -176,13 +368,7 @@ function printJSON(song) {
     $("#jsonText").html(JSON.stringify(song, undefined, 4));
 }
 
-function newString(note) {
-    this.note = note;
-}
-
-function newMeasure(measureNumber) {
-    return {
-        "measureNumber" : measureNumber, 
-        "notes" : []
-    };
+function isPowerOfTwo(x)
+{
+    return (x != 0) && ((x & (x - 1)) == 0);
 }
