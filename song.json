@@ -22,7 +22,7 @@
         "songId" : 111,
         "hz" : 440.0,
         "note" : "A", //Ab, A#.
-        "octave" : 3,
+        "octave" : 5,
         "type" : "Steel" //nylon, etc.
     }
     ],

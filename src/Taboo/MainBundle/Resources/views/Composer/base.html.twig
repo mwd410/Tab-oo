@@ -7,12 +7,15 @@
 {% endblock %}
 
 {% block head %}
+<script src="http://www.html5canvastutorials.com/libraries/kinetic-v4.0.3.js"></script>
 {% javascripts "@TabooMainBundle/Resources/public/js/composer.js"%}
 <script src="{{asset_url}}"></script>
 {% endjavascripts %}
 {% endblock %}
 
 {% block body %}
+<div id="composerDiv">
+</div>
 <pre id="jsonText"></pre>
 
 

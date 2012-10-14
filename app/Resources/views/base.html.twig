@@ -10,8 +10,8 @@
             <link rel="stylesheet" href="{{ asset_url }}">
             
         {% endstylesheets %}
-            <script src="/taboo/web/js/javascript_jquery-latest_2.js"></script>
         {% block stylesheets %}{% endblock %}
+            <script src="/taboo/web/js/javascript_jquery-latest_2.js"></script>
             {% block head %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
@@ -47,7 +47,6 @@
         {% javascripts 
         
             '@TabooMainBundle/Resources/assets/bootstrap/js/bootstrap.min.js'
-            'http://code.jquery.com/jquery-latest.js' 
             output = 'js/javascript.js' %}
             <script src="{{ asset_url }}"></script>
           

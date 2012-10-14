@@ -1,7 +1,11 @@
-#composerCanvas {
-    width: 100%;
-    height: 50%;
+#composerDiv {
     border: 1px solid black;
+}
+
+#composerCanvas {
+    width: 900px;
+    height: 200px;
+    background: #F0F0F0;
 }
 
 #jsonText {

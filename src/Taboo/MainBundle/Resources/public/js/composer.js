@@ -216,13 +216,16 @@ function Pointer() {
 function Song (artist, title) {
     this.artist = artist;
     this.title = title;
+    this.tabType = "Guitar";
+    this.capoFret = 0;
+    this.comments = "";
     this.strings = [
-    new String("e"),
-    new String("B"),
-    new String("G"),
-    new String("D"),
-    new String("A"),
-    new String("E")
+    new String("E", 4),
+    new String("B", 4),
+    new String("G", 3),
+    new String("D", 3),
+    new String("A", 3),
+    new String("E", 2)
     ];
     this.measures = [
     new Measure(1)
@@ -245,8 +248,43 @@ var p = new Pointer();
 var song = new Song("Matt Deady", "My Awesome Song");
 
     
-function String(note) {
+function String(note, octave) {
     this.note = note;
+    this.octave = octave;
+    this.calculateHz = function() {
+        //Get the number of half steps up from A
+        var letter = this.note.substring(0,1).toUpperCase();
+        var n = 0;
+        if (letter == "B") {
+            n = 2;
+        } else if (letter == "C") {
+            n = 3;
+        } else if (letter == "D") {
+            n = 5;
+        } else if (letter == "E") {
+            n = 7;
+        } else if (letter == "F") {
+            n += 8;
+        } else if (letter == "G") {
+            n += 10;
+        }
+        if (this.note.length == 2) {
+            var accidental = this.note.substr(1,2);
+            if (accidental == "b") {
+                n -= 1;
+            } else if (accidental == "#") {
+                n += 1;
+            }
+        }
+        //calculate the frequency
+        //first, adjust for the octave.
+        var hz = 27.5 * Math.pow(2, octave - 1);
+        //then, adjust for the half steps.
+        hz *= Math.pow(2, n/12);
+        return hz.toPrecision(5);
+    }
+    this.hz = this.calculateHz();
+    this.type = "Steel";
 }
 
 function Measure(measureNumber) {
@@ -254,19 +292,19 @@ function Measure(measureNumber) {
     this.notes = [];
     
     this.selectNote = function() {
-        var ret = {
+        var result = {
             "note" : null
         };
         for (var i = 0; i < this.notes.length; i++) {
             if (this.notes[i].position == p.position
                 && this.notes[i].string == p.string
                 && this.notes[i].subdivision == p.subdivision) {
-                ret["note"] = this.notes[i]
-                ret["index"] = i;
+                result["note"] = this.notes[i]
+                result["index"] = i;
                 break;
             }
         }
-        return ret;
+        return result;
     }
     
     this.addNote = function() {
@@ -303,9 +341,47 @@ function Note() {
     this.string = p.string;
     this.fret = p.fret;
     this.absolutePosition = this.position / this.subdivision * 4;
+    
+    this.calculateHz = function() {
+        
+    }
 }
 
+var composer;
+var strings;
+var stringHeader;
+
 $(document).ready(function() {
+    
+    composer = new Kinetic.Stage({
+        container: "composerDiv",
+        width: 900,
+        height: 200
+    });
+    strings = new Kinetic.Layer();
+    stringHeader = new Kinetic.Layer();
+    
+    for (var i = 0; i < song.strings.length; ++i) {
+        var space = 12;
+        var string = new Kinetic.Line({
+            points:  [50.5, 50.5 + i * space, 800, 50.5 + i * space],
+            stroke: "black",
+            strokeWidth: 1
+        });
+        strings.add(string);
+        
+        var letter = new Kinetic.Text({
+            x : 35,
+            y : 45.5 + i * space,
+            text : song.strings[i].note,
+            fontSize: 10,
+            fontFamily: "DejaVu Sans Mono",
+            textFill: "black"
+        });
+        stringHeader.add(letter);
+    }
+    composer.add(stringHeader);
+    composer.add(strings);
     
     $("body").keydown(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -340,7 +416,7 @@ $(document).ready(function() {
             }
         } else if (code == KeyEvent.DOM_VK_RETURN) {
             song.measures[p.measure].addNote(new Note());
-        } else if (code == KeyEvent.DOM_VK_PERIOD) {
+        } else if (code == KeyEvent.DOM_VK_DECIMAL) {
             song.removeSelection();
         } else if (code == KeyEvent.DOM_VK_ADD) {
             p.increaseSubdivision(e.shiftKey);
@@ -354,6 +430,8 @@ $(document).ready(function() {
             log();
         }
         printJSON(song);
+        
+        drawComposer();
     });
     
 });
@@ -371,4 +449,75 @@ function printJSON(song) {
 function isPowerOfTwo(x)
 {
     return (x != 0) && ((x & (x - 1)) == 0);
+}
+
+function drawComposer() {
+//var ctx = composer.getContext("2d");
+    
+    
+    
+}
+
+/**
+ * Linear regression function found at 
+ * http://dracoblue.net/dev/linear-least-squares-in-javascript/159/
+ */
+function findLineByLeastSquares(values_x, values_y) {
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var count = 0;
+    
+    /*
+     * We'll use those variables for faster read/write access.
+     */
+    var x = 0;
+    var y = 0;
+    var values_length = values_x.length;
+    if (values_length != values_y.length) {
+        throw new Error('The parameters values_x and values_y need to have same size!');
+    }
+    
+    /*
+     * Nothing to do.
+     */
+    if (values_length === 0) {
+        return [ [], [] ];
+    }
+    
+    /*
+     * Calculate the sum for each of the parts necessary.
+     */
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = values_y[v];
+        sum_x += x;
+        sum_y += y;
+        sum_xx += x*x;
+        sum_xy += x*y;
+        count++;
+    }
+    
+    /*
+     * Calculate m and b for the formular:
+     * y = x * m + b
+     */
+    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+    var b = (sum_y/count) - (m*sum_x)/count;
+    
+    /*
+     * We will make the x and y result line now
+     */
+    var result_values_x = [];
+    var result_values_y = [];
+    
+    for (var v = 0; v < values_length; v++) {
+        x = values_x[v];
+        y = x * m + b;
+        result_values_x.push(x);
+        result_values_y.push(y);
+    }
+    
+    return [result_values_x, result_values_y];
 }
