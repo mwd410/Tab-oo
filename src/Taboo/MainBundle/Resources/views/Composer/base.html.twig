@@ -8,9 +8,21 @@
 
 {% block head %}
 <script src="http://www.html5canvastutorials.com/libraries/kinetic-v4.0.3.js"></script>
-{% javascripts "@TabooMainBundle/Resources/public/js/composer.js"%}
+{% javascripts 
+    "@TabooMainBundle/Resources/public/js/KeyEvent.js"
+    "@TabooMainBundle/Resources/public/js/Taboo.js"
+    "@TabooMainBundle/Resources/public/js/Component.js"
+    "@TabooMainBundle/Resources/public/js/Composer.js"
+    "@TabooMainBundle/Resources/public/js/Song.js"
+    "@TabooMainBundle/Resources/public/js/String.js"
+    "@TabooMainBundle/Resources/public/js/Measure.js"
+    "@TabooMainBundle/Resources/public/js/Pointer.js"
+    "@TabooMainBundle/Resources/public/js/Note.js"
+    "@TabooMainBundle/Resources/public/js/composerLaunch.js"
+%}
 <script src="{{asset_url}}"></script>
 {% endjavascripts %}
+
 {% endblock %}
 
 {% block body %}

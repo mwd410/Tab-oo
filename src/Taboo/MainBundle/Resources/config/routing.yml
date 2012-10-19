@@ -5,3 +5,7 @@ index:
 composerBase:
     pattern: /composer
     defaults: { _controller: TabooMainBundle:Composer:base }
+    
+sandbox:
+    pattern: /sandbox
+    defaults: { _controller: TabooMainBundle:Main:sandbox }
