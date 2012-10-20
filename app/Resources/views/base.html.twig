@@ -13,7 +13,7 @@
         {% endstylesheets %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
-    <body>
+    <body> 
     
         <div class="container-fluid">
             
@@ -26,7 +26,7 @@
                     <div class="navbar navbar-inverse">
                         <div class="navbar-inner">
                             <ul class="nav">
-                                <li class="active"><a href="#">Browse Tabs</a></li>
+                                <li><a href="#">Browse Tabs</a></li>
                                 <li><a href="#">Top Composers</a></li>
                                 <li><a href="#">Help</a></li>
                             </ul>
@@ -38,17 +38,18 @@
             </header>
     
             {% block body %}{% endblock %}
-        
-        </div>
-        
-        {% block javascripts %}{% endblock %}
-        {% javascripts 
+            
+            {% javascripts 
         
             '@TabooMainBundle/Resources/assets/bootstrap/js/bootstrap.min.js'
             'http://code.jquery.com/jquery-latest.js' 
             output = 'js/javascript.js' %}
             <script src="{{ asset_url }}"></script>
           
-        {% endjavascripts %}
+            {% endjavascripts %}
+            
+            {% block javascripts %}{% endblock %}
+        
+        </div>
     </body>
 </html>

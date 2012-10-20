@@ -2,6 +2,20 @@
 
 {% block body %}
 
+{% block javascripts %}
+
+<script>
+$('#signUpButton').click(function() {
+    $('#myModal').fadeIn();
+});
+
+$('.close').click(function() {
+   $('#myModal').fadeOut();  
+});
+</script>
+
+{% endblock %}
+
 <div class="row-fluid">
     
     <div class="span12">
@@ -12,6 +26,22 @@
                 <a class="btn btn-primary btn-large">
                     Learn More
                 </a>
+                
+                <a class="btn btn-success btn-large" id="signUpButton">Sign Up</a>​
+                
+                <div class="modal hide" id="myModal">
+                    <div class="modal-header">
+                        <button class="close">x</button>
+                        <h3>Modal header</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>One fine body…</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn close">Close</a>
+                        <a href="#" class="btn btn-primary">Save changes</a>
+                    </div>
+                </div>
             </p>
         </section>
     </div>
