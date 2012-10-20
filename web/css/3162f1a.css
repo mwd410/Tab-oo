@@ -1,0 +1,17 @@
+@font-face {
+    font-family: MusiSync;
+    src : url(/taboo/web/fonts/MusiSync.ttf);
+}
+
+#composerDiv {
+    border: 1px solid black;
+}
+
+#composerCanvas {
+    width: 900px;
+    height: 200px;
+    background: #F0F0F0;
+}
+
+#jsonText {
+}

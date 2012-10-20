@@ -211,4 +211,31 @@ class String {
     {
         return $this->notes;
     }
+    
+    public function encode() {
+        $string = array();
+        
+        $string["id"] = $this->getId();
+        $string["songId"] = $this->getSong()->getId();
+        $string["hz"] = $this->getHz();
+        $string["note"] = $this->getNote();
+        $string["octave"] = $this->getOctave();
+        $string["type"] = $this->getType();
+        
+        return $string;
+    }
+    
+    public function decode($string) {
+        if (is_string($string)) {
+            $string = json_decode($string);
+        }
+        
+        $this->setHz($string["hz"]);
+        $this->setNote($string["note"]);
+        $this->setOctave($string["octave"]);
+        $this->setType($string["type"]);
+        
+        
+        return $this;
+    }
 }
