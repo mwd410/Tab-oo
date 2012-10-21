@@ -11,7 +11,7 @@ Taboo.extend = function(child, parent) {
 Taboo.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
 }
-
+Taboo.MAX_SUBDIVISION = 32;
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {

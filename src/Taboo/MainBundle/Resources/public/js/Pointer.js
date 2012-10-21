@@ -34,12 +34,11 @@ Taboo.Pointer = function(config) {
         height : Taboo.grid,
         fill : 'white'
     });
-
+    this.decoration = new Kinetic.Group();
     this.pieces = [];
     this.circle = new Kinetic.Circle({
-        x : this.number.getWidth / 2,
         radius : Taboo.grid * .75,
-        stroke : 'black',
+        stroke : 'red',
         strokeWidth : 1
     });
     this.layer.add(this.circle);
@@ -63,8 +62,9 @@ Taboo.Pointer = function(config) {
     this.layer.setPosition(20,20);
     this.layer.add(this.halo);
     this.layer.add(this.number);
+    this.layer.add(this.decoration);
     for (i = 0; i < this.pieces.length; ++i) {
-        this.layer.add(this.pieces[i]);
+        this.decoration.add(this.pieces[i]);
     }
     this.stateless.push(
         "pieces"
@@ -96,6 +96,19 @@ Taboo.Pointer.prototype = {
             } else {
                 this.pieces[i].setVisible(false);
             }
+        }
+        if (this.subdivision < 4) {
+            this.circle.setVisible(true);
+            this.circle.setX(this.number.getWidth() / 2);
+        } else {
+            this.circle.setVisible(false);
+        }
+        if (this.string < this.stringCount/2) {
+            this.decoration.setScale([1,1]);
+            this.decoration.setX(0);
+        } else {
+            this.decoration.setScale([1,-1]);
+            this.decoration.setX(this.number.getWidth()+Taboo.grid/6);
         }
         this.layer.draw();
     },
@@ -278,6 +291,9 @@ Taboo.Pointer.prototype = {
                     this.subdivision --;
                 }
             }
+            if (this.subdivision < 1) {
+                this.subdivision = 1;
+            }
         }.bind(this, precise));
         this.registerEvent({
             event : "onSubdivisionChange",
@@ -301,7 +317,11 @@ Taboo.Pointer.prototype = {
             } else {
                 this.subdivision ++;
             }
+            if (this.subdivision > Taboo.MAX_SUBDIVISION) {
+                this.subdivision = Taboo.MAX_SUBDIVISION;
+            }
         }.bind(this, precise));
+
         this.registerEvent({
             event : "onSubdivisionChange",
             params : {
