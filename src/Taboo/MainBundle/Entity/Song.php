@@ -26,7 +26,12 @@ class Song {
     * @ORM\Column(type="string", length=100)
     */
     protected $title;
-    
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $jsonSong;
+
     /**
     * @ORM\Column(type="string", length=50)
     */
@@ -36,16 +41,6 @@ class Song {
     * @ORM\Column(type="integer")
     */
     protected $capoFret;
-    
-    /**
-    * @ORM\OneToMany(targetEntity="String", mappedBy="song")
-    */
-    protected $strings;
-    
-    /**
-    * @ORM\OneToMany(targetEntity="Measure", mappedBy="song")
-    */
-    protected $measures;
     
     /**
      * Constructor
@@ -283,5 +278,28 @@ class Song {
         StopMeasures:
         
         return $this;
+    }
+
+    /**
+     * Set jsonSong
+     *
+     * @param string $jsonSong
+     * @return Song
+     */
+    public function setJsonSong($jsonSong)
+    {
+        $this->jsonSong = $jsonSong;
+    
+        return $this;
+    }
+
+    /**
+     * Get jsonSong
+     *
+     * @return string 
+     */
+    public function getJsonSong()
+    {
+        return $this->jsonSong;
     }
 }
