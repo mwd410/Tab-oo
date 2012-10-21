@@ -5,7 +5,7 @@
         <title>{% block title %}Tabs - Ukulele, Guitar, Tab-oo!{% endblock %}</title>
         {% stylesheets 
         
-            '@TabooMainBundle/Resources/assets/bootstrap/css/bootstrap.min.css'
+            '@TabooMainBundle/Resources/assets/styles.css'
             output = 'css/styles.css' %}
             <link rel="stylesheet" href="{{ asset_url }}">
             
@@ -43,7 +43,6 @@
             
             {% javascripts 
         
-            '@TabooMainBundle/Resources/assets/bootstrap/js/bootstrap.min.js'
             output = 'js/javascript.js' %}
             <script src="{{ asset_url }}"></script>
           
