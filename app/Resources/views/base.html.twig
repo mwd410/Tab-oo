@@ -15,37 +15,31 @@
             {% block head %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
-    <body> 
-    
-        <div class="container-fluid">
+    <body>
             
-            <header>
-                
-                <h1>Tab-oo</h1>
-                
-                <div class="navbar navbar-inverse">
-                    <div class="navbar-inner">
-                        <ul class="nav">
-                            <li><a href="#">Browse Tabs</a></li>
-                            <li><a href="#">Top Composers</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <header>
             
-            </header>
-    
-            {% block body %}{% endblock %}
+            <h1>Tab-oo</h1>
             
-            {% javascripts 
+            <nav>
+                <a href="#">Browse Tabs</a>
+                <a href="#">Top Composers</a>
+                <a href="{{ path('personCreate') }}">Sign Up</a>
+                <a href="#">Help</a>
+            </nav>
         
-            output = 'js/javascript.js' %}
-            <script src="{{ asset_url }}"></script>
-          
-            {% endjavascripts %}
-            
-            {% block javascripts %}{% endblock %}
+        </header>
+
+        {% block body %}{% endblock %}
         
-        </div>
+        {% javascripts 
+    
+        output = 'js/javascript.js' %}
+        <script src="{{ asset_url }}"></script>
+      
+        {% endjavascripts %}
+        
+        {% block javascripts %}{% endblock %}
+        
     </body>
 </html>

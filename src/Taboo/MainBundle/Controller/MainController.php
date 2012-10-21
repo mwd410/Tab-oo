@@ -10,8 +10,4 @@ class MainController extends Controller {
         
         return $this->render('TabooMainBundle:Main:index.html.twig', array('name2' => 'hi'));
     }
-    
-    public function sandboxAction() {
-        return $this->render("TabooMainBundle:Main:sandbox.html.twig");
-    }
 }

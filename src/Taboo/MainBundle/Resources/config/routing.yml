@@ -1,11 +1,11 @@
 index:
     pattern:  /
     defaults: { _controller: TabooMainBundle:Main:index }
+    
+personCreate:
+    pattern: register
+    defaults: { _controller: TabooMainBundle:Person:create }
 
 composerBase:
     pattern: /composer
     defaults: { _controller: TabooMainBundle:Composer:base }
-    
-sandbox:
-    pattern: /sandbox
-    defaults: { _controller: TabooMainBundle:Main:sandbox }
