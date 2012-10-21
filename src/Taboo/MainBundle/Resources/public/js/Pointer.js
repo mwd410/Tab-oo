@@ -15,9 +15,11 @@ Taboo.Pointer = function(config) {
         title : "pointer",
         onMove : function() {
             this.calculateAbs();
+        },
+        onSubdivisionChange : function() {
+            this.draw();
         }
     },this);
-    this.pieces = [];
     this.number = new Kinetic.Text({
         y : -Taboo.grid / 2 + 1,
         text : this.fret,
@@ -33,6 +35,14 @@ Taboo.Pointer = function(config) {
         fill : 'white'
     });
 
+    this.pieces = [];
+    this.circle = new Kinetic.Circle({
+        x : this.number.getWidth / 2,
+        radius : Taboo.grid * .75,
+        stroke : 'black',
+        strokeWidth : 1
+    });
+    this.layer.add(this.circle);
     var stem = new Kinetic.Line({
         x : 0,
         points : [0, 0, 0, 2.5 * Taboo.grid],
@@ -68,6 +78,25 @@ Taboo.Pointer.prototype = {
     draw : function() {
         this.number.setText(this.fret);
         this.halo.setWidth(this.number.getWidth()+2);
+        var piecesIndex;
+        if (this.subdivision > 31) {
+            piecesIndex = 4;
+        } else if (this.subdivision > 15) {
+            piecesIndex = 3;
+        } else if (this.subdivision > 7) {
+            piecesIndex = 2;
+        } else if (this.subdivision > 1) {
+            piecesIndex = 1;
+        } else {
+            piecesIndex = 0;
+        }
+        for (var i = 0; i < this.pieces.length; ++i) {
+            if (i < piecesIndex) {
+                this.pieces[i].setVisible (true);
+            } else {
+                this.pieces[i].setVisible(false);
+            }
+        }
         this.layer.draw();
     },
     init : function() {
