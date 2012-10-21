@@ -10,14 +10,34 @@ $(document).ready(function() {
 
     $('#createUserButton').click(function(event) {
         
-        alert('helsdfsdflo');
-        
-        event.stopPropagation();
         event.preventDefault();
-        return false;
+        event.stopImmediatePropagation();
         
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var confirmPassword = $('#confirmPassword').val();
+        
+        $.ajax({
+            
+            type : 'POST',
+            url  : '{{ path('personCreate') }}',
+            data : {
+                'username'        : username, 
+                'password'        : password,
+                'confirmPassword' : confirmPassword
+            },
+            beforeSend:function() {
+       
+            },
+            success:function(data) {
+                
+                console.log(data);
+            },
+            error:function() {
+        
+            }
+        });
     });       
-    
 });
 
 </script>
