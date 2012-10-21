@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+{% block javascripts %}
+
+<script>
+
+$(document).ready(function() {
+
+    $('#createUserButton').click(function(event) {
+        
+        alert('helsdfsdflo');
+        
+        event.stopPropagation();
+        event.preventDefault();
+        return false;
+        
+    });       
+    
+});
+
+</script>
+
+{% endblock %}
+
+    <section>
+    
+        <h1>Create Account</h1>
+        
+        <form>
+            <p>
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text">
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password">
+            </p>
+            <p>
+                <label for="confirmPassword">Confirm Password</label>
+                <input id="confirmPassword" name="confirmPassword" type="password">
+            </p>
+            <p>
+                <input type="submit" value="Submit" text="submit" name="createUserButton" id="createUserButton">
+            </p>
+        </form>
+        
+    </section>
+
+{% endblock %}
